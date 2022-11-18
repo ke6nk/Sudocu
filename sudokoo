@@ -1,0 +1,128 @@
+import pprint
+import math
+import numpy as np
+
+g = [[0 for col in range(9)] for col in range(9)]
+print("\nPlease Enter 9 * 9 Cube\n")
+ss = input()
+sss = np.array([int(r) for r in ss.split()])
+
+#print(len(sss))
+s = np.reshape(sss, (-1, 9))
+pprint.pprint(s)
+
+# function to remove duplicate from a list
+def remDup(x):
+  return list(dict.fromkeys(x))
+
+# function to create 
+
+def block(g, h):
+    m = math.floor(g / 3)
+    n = math.floor(h / 3)
+    b = []
+    for bp in range(3):
+        b.append(s[bp + (3 * m)][(3 * n) : (3 * n) + 3])
+    return b
+
+aboli = block(6,7)
+
+def blockg(g, h):
+    m = math.floor(g / 3) * 3
+    n = math.floor(h / 3) * 3
+    b = []
+    for bp in range(3):
+        for bpi in range(3):
+            print(bp+m)
+            print(g[bp + m][bpi + n])
+            if g[bp + m][bpi + n] != " ":
+                if bp != (i - m) and bpi != (j - n):
+                    gg = g[bp + m][bpi + n]
+                    for ggi in gg:
+                        b.append(ggi)
+    
+    return b
+
+#pprint.pprint(aboli)
+
+complete = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+n81 = 0
+itr = 0
+while n81 < 81:
+    n81 = 0
+    for i in range(9):
+        for j in range(9):
+            if s[i][j] < 1:
+                t = []
+                       
+                # search in rows
+                for k in range(9):
+                    if s[i][k] > 0:
+                        t.append(s[i][k])
+
+                # search in cols
+                for k in range(9):
+                    if s[k][j] > 0:
+                        t.append(s[k][j])
+
+                # search in blocks
+                blk = block(i, j)
+                for l in range(3):
+                    for p in range(3):
+                        if blk[l][p] > 0:
+                            t.append(blk[l][p])
+                
+                #print(t)
+                rt = remDup(t)
+                print(np.array(list(set(complete) - set(rt))))
+                #print(rt)
+                if len(rt) == 8:
+                    s[i][j] = np.array(list(set(complete) - set(rt)))
+                    #print(i)
+                    #print(j)
+                    #print(s[i][j])
+                    #print("\n")
+
+                if len(rt) < 8:
+                    g[i][j] = np.array(list(set(complete) - set(rt)))
+                   
+                #print(g[0][0:5])    
+                # search in string that is not 0 but is a string containing possible values for s[i][j]
+                #blkg = blockg(i, j)
+
+    #for i in range(9):
+        #for j in range(9):
+                if len(str(g[i][j])) > 1:
+                    m = math.floor(i / 3) * 3
+                    n = math.floor(j / 3) * 3
+                    b = []
+                    for bp in range(3):
+                        for bpi in range(3):
+                            #print(g[bp + m][bpi + n])
+                            if isinstance(g[bp + m][bpi + n],np.ndarray):
+                                if bp != (i - m) and bpi != (j - n):
+                                    gg = g[bp + m][bpi + n]
+                                    for ggi in gg:
+                                        b.append(ggi)
+                    
+                    gij = [int(cc) for cc in g[i][j]]
+                    #print(gij)
+                    #print(b)
+                    qq = np.array(list(set(gij) - set(b) - set(rt)))
+                    #print(qq)
+                    #print("\n")
+                    if len(qq) == 1:
+                        s[i][j] = qq
+                        g[i][j] = " "
+
+            if s[i][j] > 0:
+                n81 = n81 + 1
+            #print(n81)    
+    itr = itr + 1  
+    if itr > 8:
+        break
+print(g)
+print("\nNumber of cheking all squares:")
+print(itr)
+pprint.pprint(s)
+print("\nNagayidaaaaam\n")
